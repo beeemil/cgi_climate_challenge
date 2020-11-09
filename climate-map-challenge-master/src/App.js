@@ -3,12 +3,9 @@ import Metolib from '@fmidev/metolib'
 import './App.css'
 import {Map, Marker, TileLayer, Popup } from "react-leaflet"
 import styled from "styled-components"
-import L from "leaflet"
 import Locinfo from './Sidebar'
 import {Avg, DailySum, DailyAvg, DataZipper} from './components/DataHandler'
 import {goldIcon, greenIcon} from './images/markers'
-import markerCluster from 'leaflet.markercluster'
-
 
 
 const MapContainer = styled(Map)`
@@ -41,7 +38,7 @@ const App = () => {
           }
           setObservationLocations(data.locations
             .map(loc => {
-              const [lat, lon] = loc.info.position.map(parseFloat);
+              const [lat, lon] = loc.info.position.map(parseFloat)
               const meanTemps = Avg(loc.data.t.timeValuePairs.map(time => time.value))
               const dailyTemps = DailyAvg(loc.data.t.timeValuePairs)
               const dailyRain = DailySum(loc.data.r_1h.timeValuePairs)
@@ -49,32 +46,27 @@ const App = () => {
               return {...loc,meanTemps, dailyWeather, position: {lat, lon}}
             })
           );
-
           connection.disconnect();
         }
       });
-      
     }
   }, []);
-  const markers = observationLocations.map(loc => <Marker position={[loc.position.lat, loc.position.lon]}
-                                                      key={loc.info.id} 
-                                                      icon = {goldIcon}
-                                                      onClick={() => setSelectedLocation(loc.info.id)}
-                                                      riseOnHover = {true}
-                                                      >
-                                                      <Popup >
-                                                        <Locinfo selectedLocationId={selectedLocation} observationLocations={observationLocations}/>
-                                                      </Popup>
+
+  const markers = observationLocations.map(loc => <Marker position={[loc.position.lat, loc.position.lon]} key={loc.info.id} icon = {goldIcon} riseOnHover = {true}
+                                                    onClick={() => setSelectedLocation(loc.info.id)}>
+                                                    <Popup minWidth = {350}>
+                                                      <Locinfo selectedLocationId={selectedLocation} observationLocations={observationLocations}/>
+                                                    </Popup>
                                                   </Marker>)
   const position = [65, 26];
+
   const map = (
     <MapContainer center={position} zoom={6}>
       <TileLayer
         url='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
         attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
         subdomains='abcd'
-        maxZoom={19}
-      />
+        maxZoom={19}/>
       {markers}
     </MapContainer>
   );
@@ -83,7 +75,6 @@ const App = () => {
       {map}
     </div>
   );
-
 }
 
 export default App;

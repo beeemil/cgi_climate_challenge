@@ -1,3 +1,5 @@
+
+
 const Avg = (temps) => {
     // Filter NaNs
     const filTemps = temps.filter(x => x)
@@ -8,7 +10,7 @@ const Avg = (temps) => {
   const DailySum = (data) => {
     data.map(time => {
       // Since it's weekly data, we can group the data by day
-      time.time = new Date(time.time).toString().split(" ")[2]
+      time.time = new Date(time.time).toString().slice(0,2).toString()
       return time})
   
     const sums = data.reduce(function(acc,obj) {
@@ -36,7 +38,7 @@ const Avg = (temps) => {
   const DailyAvg = (data) => {
     data.map(time => {
       // Since it's weekly data, we can group the data by day
-      time.time = new Date(time.time).toString().split(" ")[2]
+      time.time = new Date(time.time).toString().split(" ").slice(0,2).toString()
       return time})
   
     const sums = data.reduce(function(acc,obj) {

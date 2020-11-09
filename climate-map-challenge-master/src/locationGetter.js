@@ -1,6 +1,6 @@
 import {useRef, useEffect} from 'react';
 
-function GetSelectedLocatoinId(value) {
+const GetSelectedLocatoinId = (value) => {
     const ref = useRef();
 
     useEffect(() => {
